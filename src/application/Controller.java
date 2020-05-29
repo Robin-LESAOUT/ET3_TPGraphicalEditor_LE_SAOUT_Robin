@@ -64,17 +64,31 @@ public class Controller {
         model= new Modele(this,false,false,false,false);
     }
 	
-	public Rectangle createRectangle(double x,double y) {
+	public Rectangle createRectangle(double x,double y, ArrayList<Rectangle> array) {
 		Rectangle r = new Rectangle(x,y,100,100);
 		r.setStroke(Color.BLACK);
-		r.setFill(null);
+		r.setFill(colorPicker.getValue());
+		array.add(r);
 		return r;
 	}
 	
-	public Ellipse createEllipse(double x, double y) {
+	public Rectangle setRectangle(Rectangle r, double X, double Y) {
+		r.setWidth(X);
+		r.setHeight(Y);
+		return r;
+	}
+	
+	public Ellipse createEllipse(double x, double y, ArrayList<Ellipse> array) {
 		Ellipse e = new Ellipse(x,y,75,40);
 		e.setStroke(Color.BLACK);
-		e.setFill(null);
+		e.setFill(colorPicker.getValue());
+		array.add(e);
+		return e;
+	}
+	
+	public Ellipse setEllipse(Ellipse e, double X, double Y) {
+		e.setRadiusX(X);
+		e.setRadiusY(Y);
 		return e;
 	}
 	
@@ -115,12 +129,52 @@ public class Controller {
 		model.setSelect(false);
 	}
 	
+	public void clicColor(MouseEvent event) {
+		model.setEl(false);
+		model.setRec(false);
+		model.setLi(false);
+		model.setSelect(false);
+		model.setCouleur(colorPicker.getValue());
+	}
+	
 	
 	public void initialize() {
 		
 		ArrayList<Rectangle> arrayR = new ArrayList<Rectangle>();
 		ArrayList<Ellipse> arrayE = new ArrayList<Ellipse>();
 		ArrayList<Line> arrayL = new ArrayList<Line>();
+		
+		
+		
+		rectangleBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				clicRectangle(event);
+			}
+		});
+		
+		ellipseBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				clicEllipse(event);
+			}
+		});
+		
+		lineBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				clicLigne(event);
+			}
+		});
+		
+		selectBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				clicSelect(event);
+			}
+		});
+		
+
 		
 		
 		colorPicker.setOnAction(new EventHandler() {
@@ -130,32 +184,32 @@ public class Controller {
 			}
 		});
 		
+		
+
+        
+		
 		Pane.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 				public void handle(MouseEvent event) {
 					if(model.isEl()) {
-						Ellipse e = createEllipse(event.getX(),event.getY());
+						Ellipse e = createEllipse(event.getX(),event.getY(),arrayE);
 						Pane.getChildren().add(arrayE.get(arrayE.size()-1));
+						
 					}
 					else if (model.isRec()) {
-						Rectangle r = createRectangle(event.getX(),event.getY());
+						Rectangle r =  createRectangle(event.getX(),event.getY(),arrayR);
 						Pane.getChildren().add(arrayR.get(arrayR.size()-1));
 					}
 				}
 			});
+			
 		
-		/*
-		pane.addEventHandler(MouseEvent.MOUSE_DRAGUED, new EventHandler<MouseEvent>()){
-			new EventHandler<MouseEvent>() {
+		Pane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent event) {
-					
+					setRectangle(arrayR.get(arrayR.size()-1),event.getX(),event.getY());
+					setEllipse(arrayE.get(arrayE.size()-1), event.getX(),event.getY());
 				}
-			}
-				
-		}*/
-		     
-		
-		
+			});
 	}
 }
