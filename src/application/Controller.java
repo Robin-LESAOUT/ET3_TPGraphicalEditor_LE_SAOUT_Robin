@@ -144,6 +144,9 @@ public class Controller {
 		ArrayList<Ellipse> arrayE = new ArrayList<Ellipse>();
 		ArrayList<Line> arrayL = new ArrayList<Line>();
 		
+		ArrayList<Double> listeX = new ArrayList<Double>();
+		ArrayList<Double> listeY = new ArrayList<Double>();
+		
 		
 		
 		rectangleBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -192,13 +195,17 @@ public class Controller {
 			@Override
 				public void handle(MouseEvent event) {
 					if(model.isEl()) {
-						Ellipse e = createEllipse(event.getX(),event.getY(),arrayE);
+						createEllipse(event.getX(),event.getY(),arrayE);
 						Pane.getChildren().add(arrayE.get(arrayE.size()-1));
+						listeX.add(event.getX());
+						listeY.add(event.getY());
 						
 					}
 					else if (model.isRec()) {
-						Rectangle r =  createRectangle(event.getX(),event.getY(),arrayR);
+						createRectangle(event.getX(),event.getY(),arrayR);
 						Pane.getChildren().add(arrayR.get(arrayR.size()-1));
+						listeX.add(event.getX());
+						listeY.add(event.getY());
 					}
 				}
 			});
@@ -207,8 +214,12 @@ public class Controller {
 		Pane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent event) {
-					setRectangle(arrayR.get(arrayR.size()-1),event.getX(),event.getY());
-					setEllipse(arrayE.get(arrayE.size()-1), event.getX(),event.getY());
+					if (model.isEl()) {
+						setEllipse(arrayE.get(arrayE.size()-1), event.getX() - (listeX.get(listeX.size()-1)), event.getY() - ((listeY.get(listeY.size()-1))));
+					}else if(model.isRec()) {
+						setRectangle(arrayR.get(arrayR.size()-1),event.getX() - (listeX.get(listeX.size()-1)),event.getY()- ((listeY.get(listeY.size()-1))));
+					}
+					
 				}
 			});
 	}
