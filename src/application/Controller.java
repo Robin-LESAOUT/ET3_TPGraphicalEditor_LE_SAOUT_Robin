@@ -209,6 +209,7 @@ public class Controller {
 								if(model.isSelect()) {
 									arrayR.get(arrayR.size()-1).setWidth(arrayR.get(arrayR.size()-1).getWidth()+10);
 									arrayR.get(arrayR.size()-1).setHeight(arrayR.get(arrayR.size()-1).getHeight()+10);
+									arrayR.get(arrayR.size()-1).setFill(colorPicker.getValue());
 								}
 							}
 						});
@@ -236,6 +237,15 @@ public class Controller {
 						});
 					}else if(model.isRec()) {
 						setRectangle(arrayR.get(arrayR.size()-1),event.getX() - (listeX.get(listeX.size()-1)),event.getY()- ((listeY.get(listeY.size()-1))));
+						arrayR.get(arrayR.size()-1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+							@Override
+							public void handle(MouseEvent event) {
+								if(model.isSelect()) {
+									arrayR.get(arrayR.size()-1).setX(event.getX());
+									arrayR.get(arrayR.size()-1).setY(event.getY());
+								}
+							}
+						});
 					}
 				}
 			});
@@ -246,21 +256,39 @@ public class Controller {
 			public void handle(MouseEvent event) {
 				if(model.isSelect()) {
 				Pane.getChildren().remove(arrayE.get(arrayE.size()-1));
+				Pane.getChildren().remove(arrayR.get(arrayR.size()-1));
+				}
+			}
+		});
+		
+		cloneBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				if(model.isSelect()) {
+					if(model.isRec()) {
+						createRectangle(event.getX()+10, event.getY(), arrayR);
+						Pane.getChildren().add(arrayR.get(arrayR.size()-1));
+					}
+					else if(model.isEl()) {
+						createEllipse(event.getX()+10, event.getY(), arrayE);
+						Pane.getChildren().add(arrayE.get(arrayE.size()-1));
+					}
 				}
 			}
 		});
 		
 		
-		
-		/*arrayE.get(arrayE.size()-1).addEventHandler(MouseEvent.MOUSE_RELEASED,new EventHandler<MouseEvent>(){
+		/*
+		arrayE.get(arrayE.size()-1).addEventHandler(MouseEvent.MOUSE_RELEASED,new EventHandler<MouseEvent>(){
 						@Override
 						public void handle(MouseEvent event) {
 							arrayE.get(arrayE.size()-1).setRadiusX(arrayE.get(arrayE.size()-1).getRadiusX()-10);
 							arrayE.get(arrayE.size()-1).setRadiusY(arrayE.get(arrayE.size()-1).getRadiusY()-10);
 						}
-					});*/
+					});
 		
-
+	*/
+		
 		
 		////QuEstion 3
 		/*
