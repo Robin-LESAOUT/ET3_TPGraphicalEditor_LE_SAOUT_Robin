@@ -17,7 +17,7 @@ public class Main extends Application {
     	Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         primaryStage.setTitle("Model - View - Controller");
-        primaryStage.setScene(new Scene(root, 400, 275));
+        primaryStage.setScene(new Scene(root, 700, 500));
         primaryStage.show();
     }
 
@@ -26,3 +26,4 @@ public class Main extends Application {
         launch(args);
     }
 }
+

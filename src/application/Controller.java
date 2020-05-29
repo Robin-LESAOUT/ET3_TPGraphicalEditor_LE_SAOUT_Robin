@@ -1,198 +1,161 @@
 package application;
 
-import javafx.scene.control.TextField;
 
-import java.awt.Button;
-import java.io.File;
-
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
+import java.util.ArrayList;
+
+import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+
+
+
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Slider;
+
 
 public class Controller {
 
 	private Modele model;
 	
 	@FXML
-	RadioButton selectBtn;
+	private RadioButton selectBtn;
 	
 	@FXML
-	RadioButton ellipseBtn;
+	private RadioButton ellipseBtn;
  
 	@FXML
-	RadioButton rectangleBtn;
+	private RadioButton rectangleBtn;
 	
 	@FXML
-	RadioButton lineBtn;
+	private RadioButton lineBtn;
 	
 	@FXML
-	Button deleteBtn;
+	private Button deleteBtn;
 	
 	@FXML
-	Button cloneBtn;
+	private Button cloneBtn;
 	
 	@FXML
-	ColorPicker colorPicker;
+	private ColorPicker colorPicker;
 	
 	@FXML
-	Canvas Canvas;
+	private ToggleGroup group;
+	
+	@FXML 
+	private Pane Pane;
+	
+	Rectangle rectangle;
+	Ellipse ellipse;
+	Line ligne;
+	
+	private Color Couleur;
+	
+	public Controller() {
+        model= new Modele(this,false,false,false,false);
+    }
+	
+	public Rectangle createRectangle(double x,double y) {
+		Rectangle r = new Rectangle(x,y,100,100);
+		r.setStroke(Color.BLACK);
+		r.setFill(null);
+		return r;
+	}
+	
+	public Ellipse createEllipse(double x, double y) {
+		Ellipse e = new Ellipse(x,y,75,40);
+		e.setStroke(Color.BLACK);
+		e.setFill(null);
+		return e;
+	}
+	
+	public Line createLine (double x,double y,double a, double b) {
+		Line l= new Line();
+		l.setStartX(a);
+		l.setStartY(b);
+		l.setEndX(x);
+		l.setEndY(y);
+		return l;
+	}
+	
+	public void clicEllipse(MouseEvent event) {
+		model.setEl(true);
+		model.setRec(false);
+		model.setLi(false);
+		model.setSelect(false);
+	}
+	
+	public void clicRectangle(MouseEvent event) {
+		model.setEl(false);
+		model.setRec(true);
+		model.setLi(false);
+		model.setSelect(false);
+	}
+	
+	public void clicSelect(MouseEvent event) {
+		model.setEl(false);
+		model.setRec(false);
+		model.setLi(false);
+		model.setSelect(true);
+	}
+	
+	public void clicLigne(MouseEvent event) {
+		model.setEl(false);
+		model.setRec(false);
+		model.setLi(true);
+		model.setSelect(false);
+	}
 	
 	
 	public void initialize() {
-		model=new Modele(this);
 		
-		// sliders
-		slid1.setValue(0);
-		slid2.setValue(0);
-		slid3.setValue(0);
+		ArrayList<Rectangle> arrayR = new ArrayList<Rectangle>();
+		ArrayList<Ellipse> arrayE = new ArrayList<Ellipse>();
+		ArrayList<Line> arrayL = new ArrayList<Line>();
 		
-		//textfields
-		txt1.setText("0");
-		txt2.setText("0");
-		txt3.setText("0");
 		
-		// couleur hexa
-		hexacolor.setText("#000000");
-		
-		// carre de couleur
-		hexacube.setFill(Color.BLACK);
-		
-		slid1.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    model.setRouge(new_val.intValue());
-            }
-        });
-		
-		slid2.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    model.setVert(new_val.intValue());
-            }
-        });
-		
-		slid3.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-                    model.setBleu(new_val.intValue());
-            }
-        });
-		
-		txt1.textProperty().addListener(new ChangeListener<String>() {
-            public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-            	try {
-            	int r=Integer.parseInt(new_val);
-				if (r>255) {
-					r=255;
-				}
-				else if (r<0) {
-					r=0;
-				}
-				model.setRouge(r);
-            	}
-            	catch(Exception e) {
-            		System.out.println(e.getMessage());
-            	}
-				
+		colorPicker.setOnAction(new EventHandler() {
+			public void handle(Event event) {
+				Color couleur = colorPicker.getValue();
+				model.setCouleur(couleur);
 			}
 		});
 		
-		txt2.textProperty().addListener(new ChangeListener<String>() {
-            public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-            	try {
-            	int g=Integer.parseInt(new_val);
-				if (g>255) {
-					g=255;
+		Pane.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+			@Override
+				public void handle(MouseEvent event) {
+					if(model.isEl()) {
+						Ellipse e = createEllipse(event.getX(),event.getY());
+						Pane.getChildren().add(arrayE.get(arrayE.size()-1));
+					}
+					else if (model.isRec()) {
+						Rectangle r = createRectangle(event.getX(),event.getY());
+						Pane.getChildren().add(arrayR.get(arrayR.size()-1));
+					}
 				}
-				else if (g<0) {
-					g=0;
-				}
-				model.setVert(g);
-            	}
-            	catch(Exception e) {
-            		System.out.println(e.getMessage());
-            	}
-				
-			}
-		});
-	
-	
-	txt3.textProperty().addListener(new ChangeListener<String>() {
-        public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-        	try {
-        	int b=Integer.parseInt(new_val);
-			b=checkVal(b);
-			model.setBleu(b);
-        	}
-        	catch(Exception e) {
-        		System.out.println(e.getMessage());
-        	}
-			
-		}
-	});
-	
-	hexacolor.textProperty().addListener(new ChangeListener<String>() {
-        public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-        	int r=Integer.parseInt(new_val.substring(1,3),16);
-        	int g=Integer.parseInt(new_val.substring(3,5),16);
-        	int b=Integer.parseInt(new_val.substring(5,7),16);
-        	r=checkVal(r);
-        	g=checkVal(g);
-        	b=checkVal(b);
-        	model.setRouge(r);
-        	model.setBleu(b);
-        	model.setVert(g);			
-		}
-	});
-	}
-	public void actualiserVue() {
-		setR(model.getRouge());
-		setG(model.getVert());
-		setB(model.getBleu());
+			});
 		
-		setSlidRed();
-		setSlidBlue();
-		setSlidGreen();
-		setHexa(model.getRouge(),model.getVert(),model.getBleu());
-	}
-	
-	public void setR(int r) {
-		txt1.setText(""+r);
-	}
-	public void setB(int b) {
-		txt3.setText(""+b);
-	}
-	public void setG(int g) {
-		txt2.setText(""+g);
-	}
-
-	public void setHexa(int r,int g,int b) {
-		hexacolor.setText("#"+String.format("%02x%02x%02x",r,g,b));
-		hexacube.setFill(Color.rgb(r,g,b));
-	}
-	public void setSlidRed() {
-		slid1.adjustValue(model.getRouge());
-	}
-	public void setSlidBlue() {
-		slid3.adjustValue(model.getBleu());
-	}
-	public void setSlidGreen() {
-		slid2.adjustValue(model.getVert());
-	}
-	public int checkVal(int val) {
-		int res=val;
-		if (res>255) {
-			res=255;
-		}
-		else if (res<0) {
-			res=0;
-		}
-		return res;
+		/*
+		pane.addEventHandler(MouseEvent.MOUSE_DRAGUED, new EventHandler<MouseEvent>()){
+			new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					
+				}
+			}
+				
+		}*/
+		     
+		
+		
 	}
 }
