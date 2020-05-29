@@ -187,8 +187,8 @@ public class Controller {
 						createEllipse(event.getX(),event.getY(),arrayE).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							@Override
 							public void handle(MouseEvent event) {
-							arrayE.get(arrayE.size()-1).setRadiusX(event.getX()+10);
-							arrayE.get(arrayE.size()-1).setRadiusY(event.getY()+10);
+							arrayE.get(arrayE.size()-1).setRadiusX(arrayE.get(arrayE.size()-1).getRadiusX()+10);
+							arrayE.get(arrayE.size()-1).setRadiusY(arrayE.get(arrayE.size()-1).getRadiusY()+10);
 							}
 						});
 						Pane.getChildren().add(arrayE.get(arrayE.size()-1));
@@ -199,8 +199,8 @@ public class Controller {
 						createRectangle(event.getX(),event.getY(),arrayR).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 							@Override
 							public void handle(MouseEvent event) {
-							arrayR.get(arrayR.size()-1).setWidth(event.getX()+10);
-							arrayR.get(arrayR.size()-1).setHeight(event.getY()+10);
+							arrayR.get(arrayR.size()-1).setWidth(arrayR.get(arrayR.size()-1).getWidth()+10);
+							arrayR.get(arrayR.size()-1).setHeight(arrayR.get(arrayR.size()-1).getHeight()+10);
 							}
 						});
 						Pane.getChildren().add(arrayR.get(arrayR.size()-1));
