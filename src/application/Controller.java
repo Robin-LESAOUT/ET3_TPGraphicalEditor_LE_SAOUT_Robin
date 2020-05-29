@@ -22,9 +22,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////// PENSEZ A LIRE LE READ ME SVP ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public class Controller {
 
+	//Declaration des attributs avec la balise FXML pour faire le lien avec sample.fxml
 	private Modele model;
 	
 	@FXML
@@ -60,10 +63,13 @@ public class Controller {
 	
 	private Color Couleur;
 	
+	//constructeur 
+	
 	public Controller() {
         model= new Modele(this,false,false,false,false);
     }
 	
+	//fonction qui permet de dessiner un rectangle et l'ajoute à l'Arraylist qui contient tous les rectangles
 	public Rectangle createRectangle(double x,double y, ArrayList<Rectangle> array) {
 		Rectangle r = new Rectangle(x,y,100,100);
 		r.setStroke(Color.BLACK);
@@ -72,6 +78,7 @@ public class Controller {
 		return r;
 	}
 	
+	//Focntion qui permet de redimensionner un rectangle (notamment pour le fait de bouger les figures dans le canvas correctment)
 	public Rectangle setRectangle(Rectangle r, double X, double Y) {
 		r.setWidth(X);
 		r.setHeight(Y);
@@ -101,6 +108,7 @@ public class Controller {
 		return l;
 	}
 	
+	//permet d'initialiser correctment les attribts en fonction du RadioButton qui a été cliqué
 	public void clicEllipse(MouseEvent event) {
 		model.setEl(true);
 		model.setRec(false);
@@ -140,15 +148,17 @@ public class Controller {
 	
 	public void initialize() {
 		
+		//Creation des array listes qui conserve les figures 
+		
 		ArrayList<Rectangle> arrayR = new ArrayList<Rectangle>();
 		ArrayList<Ellipse> arrayE = new ArrayList<Ellipse>();
 		ArrayList<Line> arrayL = new ArrayList<Line>();
 		
+		// Ces arrayLists permettent de conserver les coordonnées 
 		ArrayList<Double> listeX = new ArrayList<Double>();
 		ArrayList<Double> listeY = new ArrayList<Double>();
 		
-		
-		
+		// Events handlers qui permettent de définir si un radio button a été clique
 		rectangleBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -251,16 +261,20 @@ public class Controller {
 			});
 		
 		
+		
+		//Fonction de deletion des figures (qq bugs)
 		deleteBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				if(model.isSelect()) {
-				Pane.getChildren().remove(arrayE.get(arrayE.size()-1));
-				Pane.getChildren().remove(arrayR.get(arrayR.size()-1));
+						Pane.getChildren().remove(arrayE.get(arrayE.size()-1));
+						Pane.getChildren().remove(arrayR.get(arrayR.size()-1));
 				}
 			}
 		});
 		
+		//Tentative de clone button mais problème de out of bonds...
+		/*
 		cloneBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
@@ -276,32 +290,22 @@ public class Controller {
 				}
 			}
 		});
+		*/
 		
-		
+		// Tentattive d'évènement qui permet de déselectionner le texte en réduisant le feedback
 		/*
 		arrayE.get(arrayE.size()-1).addEventHandler(MouseEvent.MOUSE_RELEASED,new EventHandler<MouseEvent>(){
 						@Override
 						public void handle(MouseEvent event) {
+							if(model.isSelect()) {
 							arrayE.get(arrayE.size()-1).setRadiusX(arrayE.get(arrayE.size()-1).getRadiusX()-10);
 							arrayE.get(arrayE.size()-1).setRadiusY(arrayE.get(arrayE.size()-1).getRadiusY()-10);
+							arrayR.get(arrayR.size()-1).setX(arrayR.get(arrayR.size()-1).getX()-10);
+							arrayR.get(arrayR.size()-1).setY(arrayR.get(arrayR.size()-1).getY()-10);
+							}
 						}
+		
 					});
-		
-	*/
-		
-		
-		////QuEstion 3
-		/*
-		Pane.addEventHandler(MouseEvent.MOUSE_PRESSED,new EventHandler<MouseEvent>(){
-			@Override
-			public void handle(MouseEvent event) {
-				if (model.isEl()) {
-					//setEllipse(arrayE.get(arrayE.size()-1), event.getX() - (listeX.get(listeX.size()-1)), event.getY() - ((listeY.get(listeY.size()-1))));
-				}else if(model.isRec()) {
-					//setRectangle(arrayR.get(arrayR.size()-1), event.getX() - (listeX.get(listeX.size()-1)),event.getY()- ((listeY.get(listeY.size()-1))));
-				}
-			}
-		});
 		*/
 	}
 }
