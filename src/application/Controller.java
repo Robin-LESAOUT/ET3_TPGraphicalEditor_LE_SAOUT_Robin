@@ -180,29 +180,29 @@ public class Controller {
 
 		
 		
-		colorPicker.setOnAction(new EventHandler() {
-			public void handle(Event event) {
-				Color couleur = colorPicker.getValue();
-				model.setCouleur(couleur);
-			}
-		});
-		
-		
-
-        
-		
 		Pane.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 				public void handle(MouseEvent event) {
 					if(model.isEl()) {
-						createEllipse(event.getX(),event.getY(),arrayE);
+						createEllipse(event.getX(),event.getY(),arrayE).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+							@Override
+							public void handle(MouseEvent event) {
+							arrayE.get(arrayE.size()-1).setRadiusX(event.getX()+10);
+							arrayE.get(arrayE.size()-1).setRadiusY(event.getY()+10);
+							}
+						});
 						Pane.getChildren().add(arrayE.get(arrayE.size()-1));
 						listeX.add(event.getX());
 						listeY.add(event.getY());
-						
 					}
 					else if (model.isRec()) {
-						createRectangle(event.getX(),event.getY(),arrayR);
+						createRectangle(event.getX(),event.getY(),arrayR).addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+							@Override
+							public void handle(MouseEvent event) {
+							arrayR.get(arrayR.size()-1).setWidth(event.getX()+10);
+							arrayR.get(arrayR.size()-1).setHeight(event.getY()+10);
+							}
+						});
 						Pane.getChildren().add(arrayR.get(arrayR.size()-1));
 						listeX.add(event.getX());
 						listeY.add(event.getY());
@@ -219,8 +219,20 @@ public class Controller {
 					}else if(model.isRec()) {
 						setRectangle(arrayR.get(arrayR.size()-1),event.getX() - (listeX.get(listeX.size()-1)),event.getY()- ((listeY.get(listeY.size()-1))));
 					}
-					
 				}
 			});
+		
+		////QuEstion 3
+		
+		Pane.addEventHandler(MouseEvent.MOUSE_PRESSED,new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				if (model.isEl()) {
+					setEllipse(arrayE.get(arrayE.size()-1), event.getX() - (listeX.get(listeX.size()-1)), event.getY() - ((listeY.get(listeY.size()-1))));
+				}else if(model.isRec()) {
+					setRectangle(arrayR.get(arrayR.size()-1),event.getX() - (listeX.get(listeX.size()-1)),event.getY()- ((listeY.get(listeY.size()-1))));
+				}
+			}
+		});
 	}
 }
