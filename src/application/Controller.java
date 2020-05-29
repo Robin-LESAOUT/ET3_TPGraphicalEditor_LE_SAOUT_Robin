@@ -1,6 +1,8 @@
 package application;
 
 import javafx.scene.control.TextField;
+
+import java.awt.Button;
 import java.io.File;
 
 import javafx.scene.shape.Rectangle;
@@ -9,6 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 
 public class Controller {
@@ -16,28 +20,29 @@ public class Controller {
 	private Modele model;
 	
 	@FXML
-	Slider slid1;
+	RadioButton selectBtn;
 	
 	@FXML
-	Slider slid2;
+	RadioButton ellipseBtn;
  
 	@FXML
-	Slider slid3;
+	RadioButton rectangleBtn;
 	
 	@FXML
-	TextField txt1;
+	RadioButton lineBtn;
 	
 	@FXML
-	TextField txt2;
+	Button deleteBtn;
 	
 	@FXML
-	TextField txt3;
+	Button cloneBtn;
 	
 	@FXML
-	TextField hexacolor;
+	ColorPicker colorPicker;
 	
 	@FXML
-	Rectangle hexacube;
+	Canvas Canvas;
+	
 	
 	public void initialize() {
 		model=new Modele(this);

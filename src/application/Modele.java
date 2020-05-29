@@ -10,9 +10,9 @@ import javafx.scene.control.Slider;
 public class Modele {
 
 	private int rouge,bleu,vert;
-	private Controlleur controller;
+	private Controller controller;
 	
-	public Modele(Controlleur c) {
+	public Modele(Controller c) {
 		controller=c;
 	}
 	
